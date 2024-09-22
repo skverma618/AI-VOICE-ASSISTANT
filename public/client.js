@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       audioData = []; // Clear the buffer once appended.
     }
   }
+  
   function stopAudio() {
     /*
     if (audio && mediaSource && audioSourceBuffer && !audioSourceBuffer.updating) {
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     */
     resetMediaSource();
   }
-  const socket = new WebSocket("ws://localhost:3000");
+  const socket = new WebSocket(`ws://${window.location.host}`);
 
   socket.addEventListener("open", async () => {
     console.log("WebSocket connection opened");
@@ -152,8 +153,8 @@ console.log('2stopping previous audio')
     listenButton.addEventListener("click", async () => {
       if (!microphone) {
         try {
-          microphone = await getMicrophone();
-          await openMicrophone(microphone, socket);
+          microphone = await getMicrophone();  // The getMicrophone() function requests permission to access the user's microphone using the Web API navigator.mediaDevices.getUserMedia()
+          await openMicrophone(microphone, socket); // The openMicrophone() function starts the recording using the MediaRecorder object:
         } catch (error) {
           console.error("Error opening microphone:", error);
         }
@@ -181,6 +182,7 @@ console.log('2stopping previous audio')
         document.body.classList.add("recording");
         resolve();
       };
+      
 
       microphone.onstop = () => {
         console.log("WebSocket connection closed");

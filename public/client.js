@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     */
     resetMediaSource();
   }
-  const socket = new WebSocket(`ws://${window.location.host}`);
+  const socket = new WebSocket(process.env.WS_URL);
 
   socket.addEventListener("open", async () => {
     console.log("WebSocket connection opened");
